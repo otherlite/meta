@@ -1,0 +1,19 @@
+name: 文档编译+部署
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: vuepress-deploy
+      uses: jenkey2011/vuepress-deploy@master
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        TARGET_REPO: otherlite/otherlite.github.io
+        TARGET_BRANCH: main
+        BUILD_SCRIPT: npm install -g pnpm && pnpm i --frozen-lockfile && pnpm build
+        BUILD_DIR: dist/

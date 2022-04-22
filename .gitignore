@@ -1,0 +1,6 @@
+# 借鉴 https://github.com/vuejs/vue-next/blob/b5c0142cf0e10a86ff1b251ec8d5cc5cc00c336f/.gitignore
+dist
+.DS_Store
+node_modules
+*.log
+.idea

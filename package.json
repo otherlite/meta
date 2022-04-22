@@ -1,0 +1,60 @@
+{
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "clear": "find . -name 'node_modules' -type d -exec rm -rf '{}' +",
+    "prepare": "husky install"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=6"
+  },
+  "commitlint": {
+    "extends": [
+      "@tools/commitlint-config"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@tools/eslint-config"
+    ]
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "dist/"
+  ],
+  "stylelint": {
+    "extends": [
+      "@tools/stylelint-config"
+    ]
+  },
+  "lint-staged": {
+    "**/*.{css,scss,js,jsx,ts,tsx,json,yaml,md}": "prettier --write",
+    "**/*.{css,scss}": "stylelint --fix",
+    "**/*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.0.2",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@commitlint/cz-commitlint": "^12.1.4",
+    "@tools/commitlint-config": "workspace:*",
+    "@tools/eslint-config": "workspace:*",
+    "@tools/stylelint-config": "workspace:*",
+    "@tools/tsconfig": "workspace:*",
+    "commitizen": "^4.2.4",
+    "eslint": "^8.6.0",
+    "husky": "^7.0.4",
+    "inquirer": "^8.2.0",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.1.7",
+    "prettier": "^2.5.1",
+    "prettier-plugin-jsdoc": "^0.3.30",
+    "prettier-plugin-organize-imports": "^2.3.4",
+    "stylelint": "^14.2.0",
+    "typescript": "^4.5.4"
+  }
+}

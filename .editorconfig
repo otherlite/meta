@@ -1,0 +1,12 @@
+root = true
+
+[*]
+charset = utf-8
+root = true
+
+# 下面的属性会被prettier读取到，
+[*]
+end_of_line = lf # 对应prettier.endOfLine
+indent_style = space # 对应prettier.useTabs
+indent_size = 2 # 对应prettier.tabWidth
+max_line_length = 150 # 对应prettier.printWidth
