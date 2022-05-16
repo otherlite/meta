@@ -34,6 +34,9 @@ https://juejin.cn/post/6873277767165837325
 
 https://zhuanlan.zhihu.com/p/30669007
 
+## webpack babel-loader缓存原理？
+https://juejin.cn/post/6844904120436916232
+
 ## treeShaking 原理，是靠什么才能实现？
 
 https://juejin.cn/post/7002410645316436004

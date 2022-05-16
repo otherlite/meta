@@ -1,7 +1,8 @@
 {
   "scripts": {
+    "clear": "echo '清理node_modules' && find . -name 'node_modules' -type d -exec rm -rf '{}' +",
+    "new": "echo '快速创建项目'",
     "preinstall": "npx only-allow pnpm",
-    "clear": "find . -name 'node_modules' -type d -exec rm -rf '{}' +",
     "prepare": "husky install"
   },
   "engines": {
