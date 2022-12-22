@@ -1,0 +1,66 @@
+name: a simple release 🚀
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    input:
+      logLevel:
+        description: "Log level"
+        required: true
+        default: "warning"
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      print_tags:
+        description: "True to print to STDOUT"
+        required: true
+        type: boolean
+      tags:
+        description: "Test scenario tags"
+        required: true
+        type: string
+      environment:
+        description: "Environment to run tests against"
+        type: environment
+        required: true
+jobs:
+  Install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Install Dependency
+        run: echo "Install Dependency"
+
+  Lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Lint
+        run: echo "Lint"
+
+  Build:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Build
+        run: echo "Build"
+
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Deploy
+        run: echo "Deploy"

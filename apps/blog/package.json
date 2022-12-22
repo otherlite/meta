@@ -1,0 +1,19 @@
+{
+  "name": "@meta/blog",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "dumi dev",
+    "build": "dumi build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "devDependencies": {
+    "dumi": "^1.0.13"
+  },
+  "dependencies": {
+    "react": "^17",
+    "react-dom": "^17",
+    "react-router": "^6.3.0"
+  }
+}

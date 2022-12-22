@@ -1,0 +1,22 @@
+name: pull request 🐛
+on:
+  pull_request:
+jobs:
+  Install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Install Dependency
+        run: echo "Install Dependency"
+
+  Lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Lint
+        run: echo "Lint"

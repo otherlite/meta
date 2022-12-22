@@ -1,0 +1,9 @@
+{
+  "name": "@meta/tsconfig",
+  "version": "1.0.0",
+  "description": "tsconfig",
+  "files": [
+    "base.json",
+    "react-library.json"
+  ]
+}
