@@ -4,48 +4,9 @@ on:
     branches:
       - main
 env:
-  APP_ENV: @meta/blog
+  APP_ENV: "@meta/blog"
 jobs:
-  Lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-
-      - name: Set node version to 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: "pnpm"
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Lint
-        run: pnpm turbo run lint --filter=${{ APP_ENV }}
-
-  Test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-
-      - name: Set node version to 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: "pnpm"
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Test
-        run: pnpm turbo run test --filter=${{ APP_ENV }}
-
   Release:
-    needs: [Lint, Test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -62,4 +23,4 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Release
-        run: pnpm turbo run release --filter=${{ APP_ENV }}
+        run: pnpm turbo run release --filter=${{ env.APP_ENV }}
