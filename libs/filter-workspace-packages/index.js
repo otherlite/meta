@@ -12,8 +12,11 @@ if (code !== 0) {
   exit(1);
 }
 
-console.log(`GITHUB_PULL_REQUEST_BASE_SHA`, GITHUB_PULL_REQUEST_BASE_SHA);
-console.log(`GITHUB_EVENT_BEFORE`, GITHUB_EVENT_BEFORE);
+console.log(
+  `GITHUB_PULL_REQUEST_BASE_SHA`,
+  process.env.GITHUB_PULL_REQUEST_BASE_SHA
+);
+console.log(`GITHUB_EVENT_BEFORE`, process.env.GITHUB_EVENT_BEFORE);
 
 exec(
   `echo "packages=${JSON.stringify(
