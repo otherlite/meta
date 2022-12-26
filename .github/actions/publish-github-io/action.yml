@@ -1,0 +1,9 @@
+name: "Vuepress deploy"
+description: "A GitHub Action to publish Vuepress sites to GitHub Pages"
+author: "lite.zeng"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+branding:
+  icon: "upload-cloud"
+  color: "gray-dark"
