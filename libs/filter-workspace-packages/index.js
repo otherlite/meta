@@ -12,6 +12,8 @@ if (code !== 0) {
   exit(1);
 }
 
+console.log(process.env.github);
+
 exec(
   `echo "packages=${JSON.stringify(
     JSON.parse(stdout)

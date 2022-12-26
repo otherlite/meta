@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  APP_ENV: @meta/github-profile
+  APP_ENV: "@meta/github-profile"
 jobs:
   Lint:
     runs-on: ubuntu-latest
