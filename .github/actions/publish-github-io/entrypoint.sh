@@ -5,7 +5,7 @@ set -e
 echo ''
 
 echo "==> change directory to the dest"
-git config --global --add safe.directory $PUBLISH_DIR
+git config --global --add safe.directory '*'
 cd $PUBLISH_DIR
 echo "==> 1111"
 pwd
@@ -15,6 +15,7 @@ echo "==> prepare to deploy"
 git init
 echo "==> 333"
 git --version
+git config --global --add safe.directory '*'
 git status
 # git config user.name "${GITHUB_ACTOR}"
 # git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
