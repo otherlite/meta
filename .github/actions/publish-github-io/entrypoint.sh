@@ -15,6 +15,7 @@ echo "==> prepare to deploy"
 git init
 echo "==> 333"
 git --version
+git status
 # git config user.name "${GITHUB_ACTOR}"
 # git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 # if [ -z "$(git status --porcelain)" ]; then
