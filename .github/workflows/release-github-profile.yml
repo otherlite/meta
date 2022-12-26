@@ -2,8 +2,8 @@ name: release-github-profile
 on:
   workflow_dispatch:
 env:
-  APP_ENV: "@meta/github-profile"
-  APP_DIR: "github-profile"
+  APP_NAME: "@meta/github-profile"
+  APP_DIST: "github-profile"
 jobs:
   Release:
     runs-on: ubuntu-latest
@@ -24,14 +24,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build
-        run: pnpm turbo run build --filter=${{ env.APP_ENV }}
+        run: pnpm turbo run build --filter=${{ env.APP_NAME }}
 
       - name: Publish
         uses: ./.github/actions/publish-github-io
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BUILD_DIR: dist/
-          BUILD_PACKAGE: ${{ env.APP_ENV }}
+          BUILD_PACKAGE: ${{ env.APP_NAME }}
           TARGET_REPO: otherlite/otherlite.github.io
           TARGET_BRANCH: main
-          TARGET_DIR: ${{ env.APP_DIR }}
+          TARGET_DIR: ${{ env.APP_DIST }}
