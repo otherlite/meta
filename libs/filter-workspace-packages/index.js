@@ -1,7 +1,10 @@
 const { exec, echo, exit } = require("shelljs");
 
-console.log(process.env.GITHUB_PULL_REQUEST_BASE_SHA);
-console.log(process.env.GITHUB_EVENT_BEFORE);
+console.log(
+  "GITHUB_PULL_REQUEST_BASE_SHA",
+  process.env.GITHUB_PULL_REQUEST_BASE_SHA
+);
+console.log("GITHUB_EVENT_BEFORE", process.env.GITHUB_EVENT_BEFORE);
 
 const lastCommitId =
   process.env.GITHUB_PULL_REQUEST_BASE_SHA ||
