@@ -1,42 +1,13 @@
-name: pull-request
+name: release-github-profile
 on:
-  push:
+  workflow_dispatch:
     branches:
       - main
-  pull_request:
-    types: [synchronize]
-    branches:
-      - main
+env:
+  APP_ENV: @meta/github-profile
 jobs:
-  Diff:
-    runs-on: ubuntu-latest
-    outputs:
-      packages: ${{ steps.set-packages.outputs.packages }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-
-      - name: Set node version to 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: "pnpm"
-
-      - run: pnpm install --frozen-lockfile
-
-      - id: set-packages
-        run: pnpm --filter @meta/filter-workspace-packages run diff
-
   Lint:
-    needs: Diff
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package: ${{ fromJson(needs.Diff.outputs.packages) }}
     steps:
       - uses: actions/checkout@v3
 
@@ -52,14 +23,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm turbo run lint --filter=${{ matrix.package }}
+        run: pnpm turbo run lint --filter=${{ APP_ENV }}
 
   Test:
-    needs: Diff
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package: ${{ fromJson(needs.Diff.outputs.packages) }}
     steps:
       - uses: actions/checkout@v3
 
@@ -75,4 +42,24 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Test
-        run: pnpm turbo run test --filter=${{ matrix.package }}
+        run: pnpm turbo run test --filter=${{ APP_ENV }}
+
+  Release:
+    needs: [Lint, Test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node version to 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Release
+        run: pnpm turbo run release --filter=${{ APP_ENV }}
