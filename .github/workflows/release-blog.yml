@@ -4,7 +4,7 @@ on:
     branches:
       - main
 env:
-  APP_ENV: @meta/blog
+  APP_ENV: "@meta/blog"
 jobs:
   Lint:
     runs-on: ubuntu-latest

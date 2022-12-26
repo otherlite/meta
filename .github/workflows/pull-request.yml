@@ -26,6 +26,13 @@ jobs:
           node-version: 16
           cache: "pnpm"
 
+      - run: echo ${{ github.event.pull_request.base.ref }}
+      - run: echo ${{ github.event.pull_request.base.sha }}
+      - run: echo ${{ github.event.base_ref }}
+      - run: echo ${{ github.event.before }}
+
+      - run: git reflog
+
       - run: pnpm install --frozen-lockfile
 
       - id: set-packages
