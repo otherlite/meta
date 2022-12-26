@@ -1,15 +1,15 @@
 name: release-blog
 on:
   workflow_dispatch:
-    branches:
-      - main
 env:
   APP_ENV: "@meta/blog"
+  APP_DIR: "blog"
 jobs:
   Release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout branch
+        uses: actions/checkout@v3
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
@@ -20,7 +20,18 @@ jobs:
           node-version: 16
           cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependency
+        run: pnpm install --frozen-lockfile
 
-      - name: Release
-        run: pnpm turbo run release --filter=${{ env.APP_ENV }}
+      - name: Build
+        run: pnpm turbo run build --filter=${{ env.APP_ENV }}
+
+      - name: Publish
+        uses: ./.github/actions/publish-github-io
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BUILD_DIR: dist/
+          BUILD_PACKAGE: ${{ env.APP_ENV }}
+          TARGET_REPO: otherlite/otherlite.github.io
+          TARGET_BRANCH: main
+          TARGET_DIR: ${{ env.APP_DIR }}
