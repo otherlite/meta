@@ -1,0 +1,11 @@
+{
+  "name": "@meta/filter-workspace-packages",
+  "version": "1.0.0",
+  "main": "./index.js",
+  "scripts": {
+    "diff": "node index.js"
+  },
+  "dependencies": {
+    "shelljs": "^0.8.5"
+  }
+}
