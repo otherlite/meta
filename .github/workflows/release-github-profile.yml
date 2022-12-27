@@ -3,8 +3,6 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:
-      - feat/babel-plugin-federation
 env:
   APP_NAME: "@meta/github-profile"
   APP_DIST: "dist/"
