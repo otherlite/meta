@@ -12,7 +12,8 @@
     "preinstall",
     "todomvc",
     "umijs",
-    "vite"
+    "vite",
+    "webp"
   ],
   "css.validate": false,
   "less.validate": false,
