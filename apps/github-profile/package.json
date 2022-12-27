@@ -1,8 +1,8 @@
 {
   "name": "@meta/github-profile",
   "version": "1.0.0",
-  "devDependencies": {
-    "@meta/ui": "workspace:*"
+  "scripts": {
+    "build": "mkdir dist && cp bg.webp README.md dist"
   },
   "dependencies": {}
 }
