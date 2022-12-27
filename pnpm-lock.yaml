@@ -36,10 +36,7 @@ importers:
       dumi: 1.1.50_6vwjlamep5f2lvfnaddhxy6nty
 
   apps/github-profile:
-    specifiers:
-      '@meta/ui': workspace:*
-    devDependencies:
-      '@meta/ui': link:../../libs/ui
+    specifiers: {}
 
   apps/todomvc-react:
     specifiers: {}

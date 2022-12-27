@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
 env:
   APP_NAME: "@meta/github-profile"
-  APP_DIST: "github-profile"
+  APP_DIST: "dist/"
+  PUBLISH_DIR: "dist/"
 jobs:
   Release:
     runs-on: ubuntu-latest
@@ -26,12 +27,13 @@ jobs:
       - name: Build
         run: pnpm turbo run build --filter=${{ env.APP_NAME }}
 
+      - name: Copy dist files
+        run: pnpm --filter=${{ env.APP_NAME }} -c exec cp -rf ${{ env.APP_DIST }} ${{ github.workspace }}/${{ env.PUBLISH_DIR }}
+
       - name: Publish
         uses: ./.github/actions/publish-github-io
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BUILD_DIR: dist/
-          BUILD_PACKAGE: ${{ env.APP_NAME }}
-          TARGET_REPO: otherlite/otherlite.github.io
+          TARGET_REPO: otherlite/otherlite
           TARGET_BRANCH: main
-          TARGET_DIR: ${{ env.APP_DIST }}
+          PUBLISH_DIR: ${{ env.PUBLISH_DIR }}
