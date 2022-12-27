@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-federation",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "description": "Component modular import plugin for babel.",
   "main": "dist/index.js",
   "scripts": {
