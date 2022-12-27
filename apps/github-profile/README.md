@@ -1,1 +1,1 @@
-![a building](https://github.com/otherlite/otherlite/raw/master/bg.webp)
+![a building](https://github.com/otherlite/otherlite/raw/main/bg.webp)
