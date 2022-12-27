@@ -4,6 +4,9 @@
     "build": {
       "outputs": ["dist/**"]
     },
+    "deploy": {
+      "outputs": []
+    },
     "lint": {
       "outputs": []
     },
