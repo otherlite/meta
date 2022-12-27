@@ -1,0 +1,6 @@
+{
+  "name": "@meta/commitlint-config",
+  "version": "1.0.0",
+  "description": "commitlint config",
+  "main": "./index.js"
+}

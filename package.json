@@ -1,0 +1,41 @@
+{
+  "name": "meta",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "clear": "echo '清理node_modules' && find . -name 'node_modules' -type d -exec rm -rf '{}' +",
+    "lint": "turbo run lint",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.0.2",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@commitlint/cz-commitlint": "^12.1.4",
+    "@meta/commitlint-config": "workspace:*",
+    "commitizen": "^4.2.4",
+    "husky": "^7.0.4",
+    "inquirer": "^8.2.0",
+    "turbo": "^1.6.3"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=6"
+  },
+  "commitlint": {
+    "extends": [
+      "@meta/commitlint-config"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "packageManager": "pnpm@7.18.2"
+}

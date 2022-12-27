@@ -1,0 +1,18 @@
+{
+  "name": "@meta/eslint-config",
+  "version": "1.0.0",
+  "description": "eslint config",
+  "main": "./index.js",
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0"
+  }
+}
