@@ -7,8 +7,7 @@
     "update": "npm version --no-git-tag-version",
     "release": "father-build && echo $NPM_TOKEN",
     "test": "umi-test --coverage",
-    "debug": "umi-test",
-    "lint": "eslint --ext .js src"
+    "debug": "umi-test"
   },
   "license": "MIT",
   "devDependencies": {
