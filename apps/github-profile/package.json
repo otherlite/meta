@@ -1,6 +1,8 @@
 {
   "name": "@meta/github-profile",
   "version": "1.0.0",
-  "devDependencies": {},
+  "devDependencies": {
+    "@meta/ui": "workspace:*"
+  },
   "dependencies": {}
 }
