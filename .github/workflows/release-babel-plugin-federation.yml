@@ -1,0 +1,26 @@
+name: release-babel-plugin-federation
+on:
+  workflow_dispatch:
+env:
+  APP_NAME: "babel-plugin-federation"
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Set node version to 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "pnpm"
+
+      - name: Install dependency
+        run: pnpm install --frozen-lockfile
+
+      - name: Publish
+        run: pnpm turbo run release --filter=${{ env.APP_NAME }}
