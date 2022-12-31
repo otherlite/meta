@@ -2,9 +2,7 @@ name: release-blog
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "@meta/blog"
-  APP_DIST: "dist/"
-  PUBLISH_DIR: "dist/"
+  APP_NAME: "@meta/blog" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest
@@ -28,12 +26,13 @@ jobs:
         run: pnpm turbo run build --filter=${{ env.APP_NAME }}
 
       - name: Copy dist files
-        run: pnpm --filter=${{ env.APP_NAME }} -c exec cp -rf ${{ env.APP_DIST }} ${{ github.workspace }}/${{ env.PUBLISH_DIR }}
+        run: pnpm --filter=${{ env.APP_NAME }} -c exec cp -rf dist/ ${{ github.workspace }}/dist/
 
       - name: Publish
         uses: ./.github/actions/publish-github-io
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           TARGET_REPO: otherlite/otherlite.github.io
-          TARGET_BRANCH: main
-          PUBLISH_DIR: ${{ env.PUBLISH_DIR }}
+          TARGET_REPO_BRANCH: main
+          TARGET_REPO_DIR: "blog/"
+          BUILD_DIR: "dist/"

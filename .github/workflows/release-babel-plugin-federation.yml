@@ -2,7 +2,7 @@ name: release-babel-plugin-federation
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "babel-plugin-federation"
+  APP_NAME: "babel-plugin-federation" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest

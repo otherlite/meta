@@ -1,8 +1,8 @@
-name: release-github-profile
+name: release-404
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "@meta/github-profile" # 应用名称
+  APP_NAME: "@meta/404" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest
@@ -32,6 +32,7 @@ jobs:
         uses: ./.github/actions/publish-github-io
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          TARGET_REPO: otherlite/otherlite
+          TARGET_REPO: otherlite/otherlite.github.io
           TARGET_REPO_BRANCH: main
+          TARGET_REPO_DIR: "/"
           BUILD_DIR: "dist/"
