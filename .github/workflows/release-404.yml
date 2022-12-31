@@ -1,9 +1,6 @@
 name: release-404
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - feat/404
 env:
   APP_NAME: "@meta/404" # 应用名称
 jobs:
