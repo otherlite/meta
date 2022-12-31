@@ -3,8 +3,8 @@ on:
   schedule:
     - cron: "0 30 5 * *"
 jobs:
-  test-curl-action:
-    name: "Perform REST API"
+  checkin:
+    name: "Glados Checkin"
     runs-on: ubuntu-latest
     steps:
       - name: "Call API"
