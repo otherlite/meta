@@ -1,7 +1,9 @@
 name: glados-checkin
+
 on:
   schedule:
-    - cron: '0 30 5 * *'
+    - cron: "0 4 * * *"
+
 jobs:
   checkin:
     name: "Glados Checkin"
