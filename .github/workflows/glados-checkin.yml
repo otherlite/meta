@@ -1,0 +1,21 @@
+name: glados-checkin
+on:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  checkin:
+    name: "Glados Checkin"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Call API"
+        uses: actionsflow/axios@v1
+        id: api
+        with:
+          url: https://glados.network/api/user/checkin
+          method: "POST"
+          headers: ${{ secrets.GLADOS_HEADERS }}
+          data: '{ "token": "glados.network" }'
+          timeout: 10000
+      - run: echo ${{ steps.api.outputs.status }}
+      - run: echo ${{ steps.api.outputs.data }}
+      - run: echo ${{ steps.api.outputs.headers }}
