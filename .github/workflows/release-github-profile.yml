@@ -2,7 +2,7 @@ name: release-github-profile
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "@meta/github-profile" # 应用名称
+  APP_NAME: "@app/github-profile" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest
@@ -12,6 +12,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: Set node version to 16
         uses: actions/setup-node@v3

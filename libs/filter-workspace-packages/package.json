@@ -1,5 +1,5 @@
 {
-  "name": "@meta/filter-workspace-packages",
+  "name": "filter-workspace-packages",
   "version": "1.0.0",
   "main": "./index.js",
   "scripts": {

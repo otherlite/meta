@@ -1,5 +1,5 @@
 {
-  "name": "@meta/blog",
+  "name": "@app/blog",
   "version": "1.0.0",
   "scripts": {
     "start": "dumi dev",

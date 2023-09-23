@@ -1,4 +1,4 @@
-const { exec, echo, exit } = require("shelljs");
+const { exec, echo } = require("shelljs");
 
 console.log(
   "GITHUB_PULL_REQUEST_BASE_SHA",

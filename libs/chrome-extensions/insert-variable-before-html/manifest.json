@@ -1,0 +1,19 @@
+{
+  "name": "bybit ko-kr",
+  "version": "1.0",
+  "manifest_version": 3,
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": ["script.js"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": ["inject.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

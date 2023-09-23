@@ -1,0 +1,8 @@
+{
+  "name": "@app/index",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "mkdir dist && cp index.html dist"
+  },
+  "dependencies": {}
+}

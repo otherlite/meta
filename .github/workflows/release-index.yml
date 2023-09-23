@@ -1,8 +1,8 @@
-name: release-blog
+name: release-index
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "@app/blog" # 应用名称
+  APP_NAME: "@app/index" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest
@@ -36,5 +36,5 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           TARGET_REPO: otherlite/otherlite.github.io
           TARGET_REPO_BRANCH: main
-          TARGET_REPO_DIR: "blog/"
+          TARGET_REPO_DIR: "/"
           BUILD_DIR: "dist/"

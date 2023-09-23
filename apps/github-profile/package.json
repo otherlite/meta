@@ -1,8 +1,10 @@
 {
-  "name": "@meta/github-profile",
+  "name": "@app/github-profile",
   "version": "1.0.0",
   "scripts": {
     "build": "mkdir dist && cp bg.webp README.md dist"
   },
-  "dependencies": {}
+  "dependencies": {
+    "eslint-config-meta": "workspace:*"
+  }
 }
