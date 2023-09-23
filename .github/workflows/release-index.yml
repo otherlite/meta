@@ -1,8 +1,8 @@
-name: release-404
+name: release-index
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "@app/404" # 应用名称
+  APP_NAME: "@app/index" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest

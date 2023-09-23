@@ -34,7 +34,7 @@ jobs:
         env:
           GITHUB_PULL_REQUEST_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
-        run: pnpm --filter @meta/filter-workspace-packages run diff
+        run: pnpm --filter filter-workspace-packages run diff
 
   Lint:
     needs: Diff

@@ -1,5 +1,5 @@
 {
-  "name": "@meta/tsconfig",
+  "name": "tsconfig-meta",
   "version": "1.0.0",
   "description": "tsconfig",
   "files": [

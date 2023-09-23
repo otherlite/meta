@@ -2,7 +2,7 @@ name: release-blog
 on:
   workflow_dispatch:
 env:
-  APP_NAME: "@meta/blog" # 应用名称
+  APP_NAME: "@app/blog" # 应用名称
 jobs:
   Release:
     runs-on: ubuntu-latest

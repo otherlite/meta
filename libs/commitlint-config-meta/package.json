@@ -1,5 +1,5 @@
 {
-  "name": "@meta/commitlint-config",
+  "name": "commitlint-config-meta",
   "version": "1.0.0",
   "description": "commitlint config",
   "main": "./index.js"

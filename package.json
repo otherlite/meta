@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "clear": "echo '清理node_modules' && find . -name 'node_modules' -type d -exec rm -rf '{}' +",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install"
   },
@@ -8,7 +7,7 @@
     "@commitlint/cli": "^16.0.2",
     "@commitlint/config-conventional": "^16.0.0",
     "@commitlint/cz-commitlint": "^12.1.4",
-    "@meta/commitlint-config": "workspace:*",
+    "commitlint-config-meta": "workspace:*",
     "commitizen": "^4.2.4",
     "husky": "^7.0.4",
     "inquirer": "^8.2.0",
@@ -20,7 +19,7 @@
   },
   "commitlint": {
     "extends": [
-      "@meta/commitlint-config"
+      "meta"
     ]
   },
   "config": {
