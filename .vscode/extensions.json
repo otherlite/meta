@@ -1,11 +1,20 @@
 {
   "recommendations": [
-    "dbaeumer.vscode-eslint",
-    "stylelint.vscode-stylelint",
-    "esbenp.prettier-vscode",
+    // Git
     "donjayamanne.githistory",
     "eamodio.gitlens",
-    "christian-kohler.path-intellisense",
-    "streetsidesoftware.code-spell-checker"
+
+    // Theme
+    "thenikso.github-plus-theme",
+    "PKief.material-icon-theme",
+
+    // Format
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+
+    // Other
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker",
+    "42Crunch.vscode-openapi"
   ]
 }

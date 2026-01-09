@@ -1,47 +1,36 @@
 {
-  "search.exclude": {
-    "**/.git": true
+  // Git
+  "git.autofetch": true,
+
+  // Theme (每个人有自己喜欢的主题，喜欢的可以去掉注释拷贝到 user setting.json )
+  // "workbench.colorTheme": "GitHub Plus",
+  // "workbench.iconTheme": "material-icon-theme",
+
+  // Emmet
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
   },
-  "cSpell.words": [
-    "ahooks",
-    "checkin",
-    "execa",
-    "glados",
-    "nestjs",
-    "nextjs",
-    "Parens",
-    "pnpm",
-    "preinstall",
-    "todomvc",
-    "umijs",
-    "vite",
-    "webp"
-  ],
-  "css.validate": false,
-  "less.validate": false,
-  "scss.validate": false,
-  "stylelint.packageManager": "pnpm",
-  "stylelint.validate": ["css", "scss"],
-  "eslint.packageManager": "pnpm",
+
+  // Format
   "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // cSpell
+  "cSpell.words": ["forex", "Swiper"],
+  "terminal.integrated.scrollback": 10000
 }
