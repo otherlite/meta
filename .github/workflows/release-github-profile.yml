@@ -16,3 +16,4 @@ jobs:
     uses: ./.github/workflows/reusable.yml
     with:
       APP_NAME: "@app/github-profile"
+    secrets: inherit
