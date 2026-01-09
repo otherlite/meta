@@ -1,40 +1,18 @@
 name: release-blog
 on:
   workflow_dispatch:
-env:
-  APP_NAME: "@app/blog" # 应用名称
+  push:
+    branches:
+      - main
+    paths:
+      - apps/blog/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.ref || github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  Release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v3
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Set node version to 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: "pnpm"
-
-      - name: Install dependency
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm turbo run build --filter=${{ env.APP_NAME }}
-
-      - name: Copy dist files
-        run: pnpm --filter=${{ env.APP_NAME }} -c exec cp -rf dist/ ${{ github.workspace }}/dist/
-
-      - name: Publish
-        uses: ./.github/actions/publish-github-io
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          TARGET_REPO: otherlite/otherlite.github.io
-          TARGET_REPO_BRANCH: main
-          TARGET_REPO_DIR: "blog/"
-          BUILD_DIR: "dist/"
+  release:
+    uses: ./.github/workflows/reusable.yml
+    with:
+      APP_NAME: "@app/blog"

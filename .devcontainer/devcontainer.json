@@ -1,8 +1,0 @@
-{
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/NicoVIII/devcontainer-features/pnpm:2": {
-      "version": "7.9.3"
-    }
-  }
-}

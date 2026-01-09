@@ -1,0 +1,45 @@
+name: Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      APP_NAME:
+        description: "The name of the application"
+        required: true
+        type: string
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Set node version to 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependency
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm turbo run build --filter=${{ inputs.APP_NAME }}
+
+      - name: Copy dist files
+        run: pnpm --filter=${{ inputs.APP_NAME }} -c exec cp -rf dist/ ${{ github.workspace }}/dist/
+
+      - name: Publish-Static
+        uses: ./.github/actions/publish-github-io
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TARGET_REPO: otherlite/otherlite.github.io
+          TARGET_REPO_BRANCH: main
+          TARGET_REPO_DIR: "/"
+          BUILD_DIR: "dist/"
