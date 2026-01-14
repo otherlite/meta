@@ -1,8 +1,9 @@
-我想开发一个工具，名字叫 promptcc
+我想开发一个 npm 包，名字叫 promptcc
 
 - 基于 LLM + Jotai + JsonLogic 做一个 AI DSL Compiler
 - 可以将 Prompt.md 转化为 MCP-compliant Execution DSL (纯 JSON AST)
 - 运行期只用一个 deterministic engine 去执行 DSL，调用 MCP，渲染页面。
+- 支持 nextjs 框架的 SSR/CSR 页面
 
 # 流程
 
@@ -79,19 +80,25 @@ MCP:
 
 # 工程化
 
-## npm 包
+## 目录结构
 
-promptcc
-
-```bash
-- DSL types
-- Zod schema
-- AST evaluator（JsonLogic 支持）
-- engine interfaces、shared utils
-- deterministic engine 实现（Jotai + React hooks glue）
-- runtime helpers (renderers, dispatch)
-- cli: promptcc dsl, 自定义 AI 配置，根据 Prompt.md 生成 DSL.json（需要配置API KEY）
-- cli: promptcc mcpserver, 启动本地 MCP server，用于 IDE 配置 MCP server
+```
+promptcc/
+├─ src/
+│  ├─ cli/                # promptcc cli（基于 Yargs ）
+│  │  ├─ mcp-server.ts    # 启动本地 MCP server
+│  │  ├─ ai.ts            # 调用 AI 服务(需要配置 API KEY) + 注册本地 MCP server
+│  ├─ core/               # DSL types, zod schema, codegen helpers
+│  ├─ engine/             # deterministic runtime (Jotai + React hooks + AST evaluator（JsonLogic 支持）)
+│  └─ mcp-server/         # local MCP server
+│  │  ├─ index.ts         # 启动一个基础的 MCP Server，并注册 local mcp list, 当收到一个请求时动态 import&注册页面 MCP (文件页的 mcp + 工程全局 mcp)，工程目录可以向上查找最近的.ai 文件来确认
+│  │  ├─ dsl-workflow.ts  # local mcp list 之一：定义如何从 Prompt.md 生成 DSL.json、DSL.ts 的 prompt
+│  │  ├─ validate-dsl.ts  # local mcp list 之一：基于 Zod Schema 校验 DSL.json 是否符合规范，错误则返回 LLM 错误信息继续修正
+│  │  ├─ codegen-dsl.ts   # local mcp list 之一：基于 DSL.json 生成 DSL.ts（types、state 等等），import 剪枝，文件创建（页面 MCP 不存在则创建，存在则忽略）等等
+├─ examples/
+│  └─ demo-page/          # nextjs example
+├─ package.json
+└─ tsconfig.json
 ```
 
-请帮我给出一个简单的 MVP 版本，一步步教我怎么实现（比如先给出 DSL type，然后给出 Schema），，每一步我需要 review 一下，确认是否正确，没问题再给出下一步
+请帮我分析分析，一步步教我怎么实现（一个一个模块，类型啥的可以最后），每一步我需要 review 一下，确认是否正确，没问题再给出下一步
