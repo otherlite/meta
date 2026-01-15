@@ -1,4 +1,4 @@
-import { DSL } from "../types/dsl";
+import { DSL } from "types/dsl";
 
 export function generateTypeScript(dsl: DSL): string {
   const imports = `

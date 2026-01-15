@@ -1,16 +1,20 @@
-import path from "path";
-import { promises as fs } from "fs";
 import {
   MCPServerConfig,
   MCPRequest,
   MCPResponse,
   MCPContext,
   LocalMCP,
-  Logger,
   MCPDefinition,
-} from "./types";
-import { registerLocalMCPs } from "./local-mcps";
+  Logger,
+} from "types/mcp";
 import { loadMCP, discoverProjectMCPs } from "./mcp-loader";
+import { dslWorkflowMCP } from "./local-mcps/dsl-workflow";
+import { validateDSLMCP } from "./local-mcps/validate-dsl";
+import { codegenDSLMCP } from "./local-mcps/codegen-dsl";
+
+export function registerLocalMCPs(): LocalMCP[] {
+  return [dslWorkflowMCP, validateDSLMCP, codegenDSLMCP];
+}
 
 export class LocalMCPServer {
   private config: MCPServerConfig;

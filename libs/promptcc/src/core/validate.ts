@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DSL, DSLSchema, DSLValidationResult } from "../types/dsl";
+import { DSL, DSLSchema, DSLValidationResult } from "types/dsl";
 
 export function validateDSL(dsl: unknown): DSLValidationResult {
   try {

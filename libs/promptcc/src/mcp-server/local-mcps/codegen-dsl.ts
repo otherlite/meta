@@ -1,11 +1,11 @@
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
-import { LocalMCP, MCPContext } from "../types";
-import { generateTypeScript } from "../../core/codegen";
-import { validateAndFixDSL } from "../../core/validate";
-import { createSuccessResponse, createErrorResponse } from "./index";
+import { generateTypeScript } from "core/codegen";
+import { validateAndFixDSL } from "core/validate";
+import { MCPContext } from "types/mcp";
+import { createErrorResponse, createSuccessResponse } from "helpers/mcp";
 
-export const codegenDSLMCP: LocalMCP = {
+export const codegenDSLMCP = {
   definition: {
     id: "codegen-dsl",
     name: "CodeGen DSL",

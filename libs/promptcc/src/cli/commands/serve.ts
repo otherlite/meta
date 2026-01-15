@@ -1,8 +1,9 @@
-import { createLocalMCPServer } from "../../mcp-server";
+import { createLocalMCPServer } from "mcp-server";
 import ora from "ora";
 import chalk from "chalk";
+import { CommandModule } from "yargs";
 
-export async function serveCommand(argv: any) {
+export async function handler(argv: any) {
   const spinner = ora("Initializing Local MCP Server...").start();
 
   try {
@@ -147,3 +148,20 @@ async function startInteractiveMode(server: any) {
   rl.close();
   console.log(chalk.gray("Goodbye!"));
 }
+
+export const serveCommand: CommandModule<{}, { interactive: boolean }> = {
+  command: "serve",
+  describe: "Start the local MCP server",
+
+  builder: (yargs) =>
+    yargs.option("interactive", {
+      alias: "i",
+      describe: "Enable interactive mode",
+      default: false,
+      type: "boolean",
+    }),
+
+  handler: async (args) => {
+    await handler(args);
+  },
+};

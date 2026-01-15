@@ -1,11 +1,12 @@
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
-import { validateAndFixDSL } from "../../core/validate";
-import { generateTypeScript } from "../../core/codegen";
-import { promptToDSL } from "../../core/prompt-parser";
+import { validateAndFixDSL } from "core/validate";
+import { generateTypeScript } from "core/codegen";
+import { promptToDSL } from "core/prompt-parser";
 import chalk from "chalk";
+import { CommandModule } from "yargs";
 
-export async function generateCommand(argv: any) {
+export async function handler(argv: any) {
   const inputPath = path.resolve(argv.input);
   const outputDir = path.resolve(argv.output);
   const useLLM = argv.llm;
@@ -146,3 +147,31 @@ export default class ${className}MCP {
     }
   }
 }
+
+export const generateCommand: CommandModule<
+  {},
+  { input: string; output?: string; llm?: boolean }
+> = {
+  command: "generate <input>",
+  describe: "Generate DSL from Prompt.md",
+
+  builder: (yargs) =>
+    yargs
+      .positional("input", {
+        describe: "Path to Prompt.md file",
+        type: "string",
+        demandOption: true,
+      })
+      .option("output", {
+        describe: "Output directory for DSL files",
+        default: ".",
+        type: "string",
+      })
+      .option("llm", {
+        describe: "Use LLM to generate DSL",
+        default: false,
+        type: "boolean",
+      }),
+
+  handler,
+};

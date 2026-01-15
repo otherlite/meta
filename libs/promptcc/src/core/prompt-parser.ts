@@ -1,4 +1,4 @@
-import { ParsedPrompt } from "../types/prompt";
+import { ParsedPrompt } from "types/prompt";
 
 export function parsePrompt(content: string): ParsedPrompt {
   const lines = content.split("\n");

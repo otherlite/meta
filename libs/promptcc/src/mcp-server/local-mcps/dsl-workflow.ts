@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
-import { LocalMCP, MCPContext } from "../types";
-import { promptToDSL } from "../../core/prompt-parser";
-import { createSuccessResponse, createErrorResponse } from "./index";
+import { promptToDSL } from "core/prompt-parser";
+import { createErrorResponse, createSuccessResponse } from "helpers/mcp";
+import { LocalMCP, MCPContext } from "types/mcp";
 
 export const dslWorkflowMCP: LocalMCP = {
   definition: {

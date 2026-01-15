@@ -1,8 +1,8 @@
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
-import { LocalMCP, MCPContext } from "../types";
+import { LocalMCP, MCPContext } from "types/mcp";
 import { validateAndFixDSL, deepValidateDSL } from "../../core/validate";
-import { createSuccessResponse, createErrorResponse } from "./index";
+import { createErrorResponse, createSuccessResponse } from "helpers/mcp";
 
 export const validateDSLMCP: LocalMCP = {
   definition: {

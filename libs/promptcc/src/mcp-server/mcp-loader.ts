@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { LocalMCP } from "./types";
+import { LocalMCP } from "types/mcp";
 
 export async function discoverProjectMCPs(
   projectRoot: string
