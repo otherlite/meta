@@ -1,6 +1,6 @@
 我想开发一个能力，名字叫 promptcc
 
-- 基于 LLM + Jotai + JsonLogic 做一个 AI DSL Compiler
+- 基于 LLM + Jotai + 自定义 Rule-Combined + zod 做一个 AI DSL Compiler
 - 可以将 Prompt.md 转化为 MCP-compliant Execution DSL (纯 JSON AST)、DSL.ts/type.ts 等等
 - 运行期只用一个 deterministic engine 去执行 DSL.ts，调用 MCP Tool，渲染页面。
 - 支持 nextjs 框架的 SSR/CSR 页面
@@ -20,7 +20,14 @@ AI-assisted DSL(UI + State Machine + Side Effects 的声明式语言，支持 �
 例如
 
 ```md
-# 状态
+# 外部状态
+
+搜索参数：
+
+- query（字符串，默认空字符串）
+- category（字符串，默认全部）
+
+# 内部状态
 
 用户输入，默认 空
 用户信息，默认 null
@@ -66,7 +73,6 @@ MCP:
 
 在 SSR/CSR page 里 import DSL.ts 并调用 deterministic engine 执行
 读取 state、effect 等，生成基于 jotai 的状态机 + react hooks 调用 + 页面 MCP Tool 调用
-可以参考 OpenManus Engine + JsonLogic 实现
 
 - 支持状态机的执行
 - 支持 页面 MCP Tool 的调用
@@ -81,32 +87,41 @@ MCP:
 
 # 架构
 
-## Local MCP
+## Local MCP （promptcc-mcp）
 
 基于 @modelcontextprotocol/sdk-typescript 实现，符合标准 MCP 协议
 
-- PromptToDSLMCP Prompt: Prompt MCP，描述完整任务（采样、校验、转换等等），LLM 来调用其他 MCP
+- PromptToDSLWorkflow: Prompt MCP，描述完整任务（采样、校验、纠错、代码生成等等，调用 Local MCP 完成）
   - 输入：Prompt.md
   - 输出：DSL.json/DSL.ts/type.ts 等等
-- PromptToDSLMCP Sampling：负责将 Prompt.md 转化为 DSL.json
+- PromptToDSLSampling：负责将 Prompt.md 转化为 DSL.json
   - 输入：Prompt.md
   - 输出：DSL.json
-- DSLValidateMCP Tool：负责校验 DSL.json 是否符合 MCP 规范
+- DSLValidate：负责校验 DSL.json 是否符合 MCP 规范
   - 输入：DSL.json
   - 输出：校验结果（通过/失败）
-- DSLCodeGenMCP Tool：负责生成 DSL.ts（types、state 等等），import 剪枝，页面 MCP Tool 创建（不存在则创建，存在则忽略）等等
+- DSLCodeGen：负责生成 DSL.ts（types、state 等等），import 剪枝，页面 MCP Tool 创建（不存在则创建，存在则忽略）等等
   - 输入：DSL.json
   - 输出：DSL.ts/type.ts 等等
+- PageMcpLoader：负责加载页面 MCP Tool
 
-## DeterministicEngineMCP
+## DeterministicEngineMCP（promptcc-engine-react）
 
 - 没有 LLM 参与，负责执行 DSL.ts，调用页面 MCP Tool，渲染页面。
 - 目前只有 jotai + react + nextjs 版本，未来会支持更多框架。
 
-## helpers
+## helpers（promptcc-helpers）
 
 放一些公共的类型、函数、常量等，例如：
 
+- DSL Schema：定义 DSL.json 的 JSON Schema
+  - 可以用于校验 DSL.json 是否符合规范
+  - LLM 友好（可以直接作为 LLM 的 prompt）
+  - 自定义 zod Rule-Combined （能够给 DSLValidate 做校验，也能辅助 DeterministicEngineMCP 做执行），例如：
+    - 支持 `and`, `or`, `not` 等操作符
+    - 支持 `equals`, `notEquals`, `greaterThan`, `lessThan` 等比较操作符
+    - 支持 `in`, `notIn` 等集合操作符
+- DSLTypes.ts：定义 DSL.json 的类型
 - 页面 MCP Tool 调用的参数类型
 - 页面 MCP Tool 调用的返回值类型
 - 状态机的状态类型
@@ -126,17 +141,15 @@ promptcc-mcp
 │   ├── DSLCodeGen.ts
 │   ├── PageMcpLoader.ts
 ├── McpServer.ts // 负责加载全局 MCP Tool
-├── README.md
 ├── package.json
 promptcc-engine-react
 ├── src/
 │   ├── index.ts
-├── README.md
 ├── package.json
 promptcc-helpers
 ├── src/
+│   ├── DSLSchema.ts
 │   ├── DSLTypes.ts
-├── README.md
 ├── package.json
 ```
 
