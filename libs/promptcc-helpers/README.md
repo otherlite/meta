@@ -1,93 +1,89 @@
 我想开发一个能力，名字叫 promptcc
 
 - 基于 LLM + Jotai + 自定义 Rule-Combined + zod 做一个 AI DSL Compiler
-- 可以将 Prompt.md 转化为 MCP-compliant Execution DSL (纯 JSON AST)、DSL.ts/type.ts 等等
-- 运行期只用一个 deterministic engine 去执行 DSL.ts，调用 MCP Tool，渲染页面。
+- 可以将 Prompt.md 转化为 DSL (纯 JSON AST)、useDSL.tsx、type.ts 等等
+- 运行期直接引用 useDSL.tsx 获取执行 DSL 结果，选择想要渲染的部分
 - 支持 nextjs 框架的 SSR/CSR 页面
 
 # 流程
 
 ## Prompt.md
 
-AI-assisted DSL(UI + State Machine + Side Effects 的声明式语言，支持 全局 MCP Tool /本页 MCP Tool 调用)
+AI-assisted DSL(装饰器模式)
 
-- States
-- Events
-- Effects (async / debounce)
-- Derived State
-- View Structure (组件树 + 组件对应的 MCP + 每个组件需要的数据)
+- @states
+- @derived
+- @events
+- @effects
+- @ui
+- @ui2
 
 例如
 
 ```md
-# 外部状态
-
-搜索参数：
+@searchParams
 
 - query（字符串，默认空字符串）
 - category（字符串，默认全部）
 
-# 内部状态
+@state
 
-用户输入，默认 空
-用户信息，默认 null
-提交状态，默认 false
+- userInput（字符串，默认空字符串）
+- userInfo（对象，默认 null）
+- submitStatus（布尔值，默认 false）
 
-# 派生状态
+@derived
 
-是否允许提交 = 用户输入 不为空 且 提交状态 为 false
+- isSubmitAllowed（布尔值，默认 false）
 
-# 事件与行为
+@events
 
-输入变化 -> 更新用户输入
-点击提交 -> 设置提交状态为 true 并调用获取用户信息
+- inputChange（输入变化）
+- clickSubmit（点击提交）
 
-# Effect
+@effects
 
-获取用户信息：调用 FetchMcp
-接口：/get-user
-成功：更新用户信息，并设置提交状态为 false
-失败：设置提交状态为 false，显示提示
+- fetchUserInfo（获取用户信息）
 
-# 界面
+@ui
 
-文本框（TextFieldMCP） 绑定 用户输入
-按钮（ButtonMCP） 显示 "提交"，禁用 当 不允许提交，点击 点击提交
+- textField（TextFieldMCP） 绑定 用户输入
+- button（ButtonMCP） 显示 "提交"，禁用 当 不允许提交，点击 点击提交
+
+@ui2
+
+- button2（ButtonMCP） 显示 "提交"，禁用 当 不允许提交，点击 点击提交
 ```
 
-## Prompt.md -> DSL.json + DSL.ts
+## Prompt.md -> DSL.json + useDSL.tsx + type.ts
 
 > LLM 只负责“结构填充”、Schema 负责“格式正确”
 
 Input: 页面 Prompt.md
 Engine: LLM
-Output: MCP-compliant Execution DSL (纯 JSON AST)
+Output: DSL (纯 JSON AST)、useDSL.tsx、type.ts 等等
 MCP:
 
-- 全局 MCP：在 /mcps 目录下的 MCP，例如 FetchMcp
-- 本页 MCP：在本页目录下的 MCP，例如 TextFieldMCP、ButtonMCP
-- 校验: 基于 Zod 校验 DSL.json 是否符合规范，如果报错，可以把错误信息传回给 LLM，让 LLM 重新修正（或者由本地脚本提示用户手动修正
-- CodeGen: 生成 DSL.ts（types、state 等等），import 剪枝，页面 MCP Tool 创建（不存在则创建，存在则忽略）等等
+- 校验: 基于 Zod 校验 DSL.json 是否符合规范，如果报错，可以把错误信息传回给 LLM，让 LLM 重新修正（或者由本地脚本提示用户手动修正）
+- CodeGen: 生成 useDSL.tsx（types、state 等等），import 剪枝等等
 
-## deterministic engine
+## Page
 
-在 SSR/CSR page 里 import DSL.ts 并调用 deterministic engine 执行
-读取 state、effect 等，生成基于 jotai 的状态机 + react hooks 调用 + 页面 MCP Tool 调用
+```ts
+import useDSL from "./useDSL";
 
-- 支持状态机的执行
-- 支持 页面 MCP Tool 的调用
-- 支持 Effects 的执行
-- 支持 Derived State 的计算
-- 支持 View Structure 的渲染
+export const Page = () => {
+  const { ui, ui2 } = useDSL();
+  return ui;
+};
+```
 
-## 页面 MCP Tool
-
-基于 @modelcontextprotocol/sdk-typescript 实现，符合标准 MCP 协议
-只面向状态机，只有读行为+绑定事件+组件渲染(例如 Input MCP Tool)，或者独立的逻辑（比如 Fetch MCP Tool），是安全沙箱
+- engine 支持 hook 调用执行
+- 在 SSR/CSR page 里根据返回结果，自行选择想要渲染的部分
 
 # 架构
 
-## Local MCP （promptcc-mcp）
+## Local MCP
 
 基于 @modelcontextprotocol/sdk-typescript 实现，符合标准 MCP 协议
 
@@ -103,54 +99,32 @@ MCP:
 - DSLCodeGen：负责生成 DSL.ts（types、state 等等），import 剪枝，页面 MCP Tool 创建（不存在则创建，存在则忽略）等等
   - 输入：DSL.json
   - 输出：DSL.ts/type.ts 等等
-- PageMcpLoader：负责加载页面 MCP Tool
 
-## DeterministicEngineMCP（promptcc-engine-react）
+## Customize Decorator
 
-- 没有 LLM 参与，负责执行 DSL.ts，调用页面 MCP Tool，渲染页面。
-- 目前只有 jotai + react + nextjs 版本，未来会支持更多框架。
+- 可以自定义装饰器，例如：@searchParams、@state、@derived、@events、@effects、@ui、@ui2 等等
+- 可以自定义装饰器的参数，例如：@searchParams(query: string, category: string) 等等
 
-## helpers（promptcc-helpers）
+这部分逻辑交给 DSLCodeGen 实现，例如 @searchParams
 
-放一些公共的类型、函数、常量等，例如：
+- 定义 input Schema / output Schema，例如：@searchParams(query: string, category: string) -> { query: string, category: string }
+- 实现 codegen 逻辑
 
-- DSL Schema：定义 DSL.json 的 JSON Schema
-  - 可以用于校验 DSL.json 是否符合规范
-  - LLM 友好（可以直接作为 LLM 的 prompt）
-  - 自定义 zod Rule-Combined （能够给 DSLValidate 做校验，也能辅助 DeterministicEngineMCP 做执行），例如：
-    - 支持 `and`, `or`, `not` 等操作符
-    - 支持 `equals`, `notEquals`, `greaterThan`, `lessThan` 等比较操作符
-    - 支持 `in`, `notIn` 等集合操作符
-- DSLTypes.ts：定义 DSL.json 的类型
-- 页面 MCP Tool 调用的参数类型
-- 页面 MCP Tool 调用的返回值类型
-- 状态机的状态类型
-- 状态机的事件类型
-- 状态机的效果类型
-- 状态机的派生状态类型
-- 状态机的视图结构类型
+可以内置一部分常用的装饰器，例如 @searchParams、@state、@derived、@events、@effects、@ui、@ui2 等等
+开放自定义装饰器的能力，用户可以根据需要自定义装饰器
 
 # 项目结构
 
 ```
-promptcc-mcp
+promptcc
 ├── src/
 │   ├── PromptToDSLWorkflow.ts
 │   ├── PromptToDSLSampling.ts
 │   ├── DSLValidate.ts
 │   ├── DSLCodeGen.ts
-│   ├── PageMcpLoader.ts
-├── McpServer.ts // 负责加载全局 MCP Tool
-├── package.json
-promptcc-engine-react
-├── src/
 │   ├── index.ts
-├── package.json
-promptcc-helpers
-├── src/
-│   ├── DSLSchema.ts
-│   ├── DSLTypes.ts
+├── McpServer.ts
 ├── package.json
 ```
 
-帮我实现，尽量函数式编程(不要 Class)
+帮我实现
