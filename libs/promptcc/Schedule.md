@@ -28,31 +28,39 @@ AI-assisted DSL(装饰器模式)
 
 @state
 
-- userInput（字符串，默认空字符串）
-- userInfo（对象，默认 null）
-- submitStatus（布尔值，默认 false）
+- input（字符串，默认空字符串）
+- date（日期，默认当前日期）
 
-@derived
+@memo
 
-- isSubmitAllowed（布尔值，默认 false）
+- isSubmitAllowed（input 和 date 都不为空）
 
-@events
+@callback
 
-- inputChange（输入变化）
-- clickSubmit（点击提交）
+- onInputChange（输入变化）
+- onSubmit（点击提交）
 
-@effects
+@effect
 
 - fetchUserInfo（获取用户信息）
 
 @ui
 
-- textField（TextFieldMCP） 绑定 用户输入
-- button（ButtonMCP） 显示 "提交"，禁用 当 不允许提交，点击 点击提交
+- textField:
+  - 绑定 input
+- datePicker:
+  - 绑定 date
+- button
+  - 显示 "提交"
+  - 禁用: 当 isSubmitAllowed 为 false
+  - 点击: onSubmit
 
 @ui2
 
-- button2（ButtonMCP） 显示 "提交"，禁用 当 不允许提交，点击 点击提交
+- button:
+  - 显示 "提交"
+  - 禁用: 当 isSubmitAllowed 为 false
+  - 点击: onSubmit
 ```
 
 ## Prompt.md -> DSL.json + useDSL.tsx + type.ts
@@ -105,7 +113,7 @@ export const Page = () => {
 - 可以自定义装饰器，例如：@searchParams、@state、@derived、@events、@effects、@ui、@ui2 等等
 - 可以自定义装饰器的参数，例如：@searchParams(query: string, category: string) 等等
 
-这部分逻辑交给 DSLCodeGen 实现，例如 @searchParams
+Decorator 插件化（官方内置 + 用户自定义）CodeGen、Runtime、Validate 三端共享同一套类型语义，例如 @searchParams
 
 - 定义 input Schema / output Schema，例如：@searchParams(query: string, category: string) -> { query: string, category: string }
 - 实现 codegen 逻辑
