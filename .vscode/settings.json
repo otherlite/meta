@@ -31,6 +31,10 @@
   },
 
   // cSpell
-  "cSpell.words": ["forex", "Swiper"],
+  "cSpell.words": [
+    "forex",
+    "modelcontextprotocol",
+    "Swiper"
+  ],
   "terminal.integrated.scrollback": 10000
 }

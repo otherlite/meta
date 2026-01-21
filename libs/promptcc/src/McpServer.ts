@@ -1,14 +1,12 @@
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from "@modelcontextprotocol/sdk/server/index";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio";
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
-  ToolSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { z } from "zod";
-import { PromptToDSLWorkflow } from "./PromptToDSLWorkflow";
-import { DSLValidator } from "./DSLValidate";
-import { DSLCodeGenerator } from "./DSLCodeGen";
+} from "@modelcontextprotocol/sdk/types";
+import { PromptToDSLWorkflow } from "./mcp/PromptToDSLWorkflow";
+import { DSLValidator } from "./mcp/DSLValidate";
+import { DSLCodeGenerator } from "./mcp/DSLCodeGen";
 
 export class PromptCCMCPServer {
   private server: Server;
