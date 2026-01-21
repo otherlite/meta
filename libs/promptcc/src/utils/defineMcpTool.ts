@@ -1,14 +1,24 @@
-import type { PromptCallback } from "@modelcontextprotocol/sdk/server/mcp";
-import { ZodRawShapeCompat } from "@modelcontextprotocol/sdk/server/zod-compat";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp";
+import {
+  AnySchema,
+  ZodRawShapeCompat,
+} from "@modelcontextprotocol/sdk/server/zod-compat";
+import { ToolAnnotations } from "@modelcontextprotocol/sdk/types";
 
-export function defineMcpTool<TSchema extends ZodRawShapeCompat>(tool: {
+export function defineMcpTool<
+  OutputArgs extends ZodRawShapeCompat | AnySchema,
+  InputArgs extends undefined | ZodRawShapeCompat | AnySchema = undefined
+>(tool: {
   name: string;
   config: {
-    title: string;
-    description: string;
-    argsSchema: TSchema;
+    title?: string;
+    description?: string;
+    inputSchema?: InputArgs;
+    outputSchema?: OutputArgs;
+    annotations?: ToolAnnotations;
+    _meta?: Record<string, unknown>;
   };
-  handler: PromptCallback<TSchema>;
+  handler: ToolCallback<InputArgs>;
 }) {
   return tool;
 }
