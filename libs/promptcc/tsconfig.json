@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src/",
     "target": "ES2022",
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "moduleResolution": "node",
+    "module": "esnext",          
+    "moduleResolution": "node", 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
