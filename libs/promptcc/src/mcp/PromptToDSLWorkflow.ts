@@ -11,21 +11,55 @@ export default defineMcpTool({
       filePath: z.string().describe("需要转换的prompt文件路径"),
     },
     outputSchema: {
-      description: z.string(),
       success: z.boolean(),
       filePath: z.string().describe("生成的DSL.json文件路径"),
-      template: z.string().describe("生成的useDSL.ts文件路径"),
+      template: z.string().describe("生成的useDSL.ts文件路径").optional(),
+      description: z.string().optional(),
+      errorMessage: z.string().optional(),
     },
   },
   handler: async ({ filePath }) => {
-    return {
-      description: "DSL generation completed",
-      content: [
-        {
-          type: "text",
-          text: `DSL generated from: ${filePath}`,
+    try {
+      const template = `# 智能 Prompt 转换 DSL 
+
+复制${filePath}，新文件后缀改为.ts
+`;
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `✅ 智能 Prompt 转换 DSL 工具调用成功
+
+目标文件: ${filePath}
+Prompt: ${template}
+
+`,
+          },
+        ],
+        structuredContent: {
+          success: true,
+          filePath,
+          template,
+          description: "引导 AI 完成从 Prompt.md 转换到 DSL 流程",
         },
-      ],
-    };
+      };
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      return {
+        content: [
+          {
+            type: "text",
+            text: `❌ 智能 Prompt 转换 DSL 工具调用失败：${errorMessage}`,
+          },
+        ],
+        structuredContent: {
+          success: false,
+          filePath,
+          errorMessage,
+        },
+      };
+    }
   },
 });
