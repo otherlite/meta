@@ -32,7 +32,7 @@ export const StateSchema: z.ZodType<StateNode> = z.lazy(() =>
       ...BaseState,
       type: z.literal("custom"),
       schema: z.array(StateSchema), // recursive
-      defaultValue: z.record(z.any()).optional(), // 可以为空或部分字段
+      defaultValue: z.record(z.string(), z.any()).optional(), // 可以为空或部分字段
     }),
   ]),
 );

@@ -1,39 +1,14 @@
 import { z } from "zod";
-import { ZodRawShapeCompat } from "@modelcontextprotocol/sdk/server/zod-compat";
 import { ToolAnnotations } from "@modelcontextprotocol/sdk/types";
 
-type IsZodOptional<T> = T extends z.ZodOptional<any> ? true : false;
-
-type UnwrapZod<T> = T extends z.ZodOptional<infer U>
-  ? UnwrapZod<U>
-  : T extends z.ZodDefault<infer U>
-  ? UnwrapZod<U>
-  : T;
-
-type InferField<T> = T extends z.ZodTypeAny ? z.infer<UnwrapZod<T>> : unknown;
-
-export type InferRawShape<T extends ZodRawShapeCompat> =
-  // 必填字段
-  {
-    [K in keyof T as IsZodOptional<T[K]> extends true ? never : K]: InferField<
-      T[K]
-    >;
-  } &
-    // 可选字段
-    {
-      [K in keyof T as IsZodOptional<T[K]> extends true
-        ? K
-        : never]?: InferField<T[K]>;
-    };
-
-type SendResultT<T extends ZodRawShapeCompat> = {
-  content: Record<string, string>[];
-  structuredContent: InferRawShape<T>;
+export type HandleResult<T extends z.ZodObject> = {
+  content: Array<{ type: "text"; text: string }>;
+  structuredContent: z.infer<T>;
 };
 
 export function defineMcpTool<
-  OutputArgs extends ZodRawShapeCompat,
-  InputArgs extends ZodRawShapeCompat
+  OutputArgs extends z.ZodObject,
+  InputArgs extends z.ZodObject
 >(tool: {
   name: string;
   config: {
@@ -45,8 +20,8 @@ export function defineMcpTool<
     _meta?: Record<string, unknown>;
   };
   handler: (
-    args: InferRawShape<InputArgs>,
-  ) => SendResultT<OutputArgs> | Promise<SendResultT<OutputArgs>>;
+    args: z.infer<InputArgs>,
+  ) => HandleResult<OutputArgs> | Promise<HandleResult<OutputArgs>>;
 }) {
   return tool;
 }

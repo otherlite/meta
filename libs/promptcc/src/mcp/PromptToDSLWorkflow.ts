@@ -1,5 +1,6 @@
 import { defineMcpTool } from "utils/defineMcpTool";
 import { z } from "zod";
+import { DSLSchema } from "dsl";
 
 const getInstructions = ({ filePath }: { filePath: string }) => {
   return `
@@ -9,12 +10,11 @@ const getInstructions = ({ filePath }: { filePath: string }) => {
 
 ### 📋 你的 Prompt.md 格式说明
 你的文件使用以下格式：
-1. 标签: @searchParams, @state, @memo, @callback, @effect, @ui
-2. 格式: 组件名（类型，默认值）
-3. 条件: 自然语言描述，如"input 和 date 都不为空"
-4. UI绑定: 中文描述，如"绑定 input"
+1. 标签: @state
+2. 条件: 自然语言描述，如"input 和 date 都不为空"
+3. UI绑定: 中文描述，如"绑定 input"
 
-### 🎯 LLM 需要执行的任务（不要自己写解析代码）
+### 🎯 LLM 需要执行的任务
 
 **你的任务是：**
 1. 读取文件内容
@@ -22,66 +22,11 @@ const getInstructions = ({ filePath }: { filePath: string }) => {
 3. 转换为结构化 JSON
 4. 验证和生成代码
 
-### 📝 转换规则（告诉 LLM 如何转换）
+### 📝 DSL 输出结构规则（必须严格遵守）
 
-**1. searchParams 转换规则:**
-\`\`\`
-原格式: query（字符串，默认空字符串）
-转换后: { "name": "query", "type": "string", "default": "" }
-\`\`\`
+${JSON.stringify(DSLSchema.toJSONSchema(), null, 2)}
 
-**2. state 转换规则:**
-\`\`\`
-原格式: input（字符串，默认空字符串）
-转换后: { "name": "input", "type": "string", "default": "" }
-
-原格式: date（日期，默认当前日期）
-转换后: { "name": "date", "type": "Date", "default": "new Date()" }
-\`\`\`
-
-**3. memo 转换规则:**
-\`\`\`
-原格式: isSubmitAllowed（input 和 date 都不为空）
-转换后: { 
-  "name": "isSubmitAllowed", 
-  "condition": "input && date",
-  "dependencies": ["input", "date"]
-}
-\`\`\`
-
-**4. UI 绑定转换规则:**
-\`\`\`
-原格式: 
-textField:
-  - 绑定 input
-
-转换后:
-{
-  "textField": {
-    "bind": "input"
-  }
-}
-\`\`\`
-
-**5. 按钮属性转换:**
-\`\`\`
-原格式:
-button
-  - 显示 "提交"
-  - 禁用: 当 isSubmitAllowed 为 false
-  - 点击: onSubmit
-
-转换后:
-{
-  "button": {
-    "text": "提交",
-    "disabled": "!isSubmitAllowed",
-    "onClick": "onSubmit"
-  }
-}
-\`\`\`
-
-### 🚀 执行步骤
+### 🚀 执行步骤（请严格执行，不要其他额外的操作）
 
 **步骤 1: 读取文件**
 获取 ${filePath} 的内容
@@ -112,17 +57,17 @@ export default defineMcpTool({
   config: {
     title: "PromptToDSLWorkflow",
     description: "将用户输入的 prompt.md 转换为 dsl.json",
-    inputSchema: {
+    inputSchema: z.object({
       filePath: z.string().describe("需要转换的 prompt.md 文件路径"),
-    },
-    outputSchema: {
+    }),
+    outputSchema: z.object({
       success: z.boolean(),
       filePath: z.string().describe("需要转换的 prompt.md 文件路径").optional(),
       description: z.string().optional(),
       instructions: z.string().optional(),
       error: z.string().optional(),
       suggestions: z.array(z.string()).optional(),
-    },
+    }),
   },
   handler: async ({ filePath }) => {
     try {
