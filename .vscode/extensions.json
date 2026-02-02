@@ -15,6 +15,9 @@
     // Other
     "formulahendry.auto-rename-tag",
     "streetsidesoftware.code-spell-checker",
-    "42Crunch.vscode-openapi"
+    "42Crunch.vscode-openapi",
+
+    // Leetcode
+    "labuladong.leetcode-helper"
   ]
 }
