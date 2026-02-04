@@ -1,3 +1,0 @@
-- 安装插件 "labuladong.leetcode-helper"
-- 修改 workspace settings 中的 "labuladong-leetcode.workspaceFolder" 为当前工程下 .lcpr 目录
-- 登录 leetcode.cn

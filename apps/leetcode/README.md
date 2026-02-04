@@ -1,0 +1,5 @@
+- 安装插件 "labuladong.leetcode-helper"
+- 修改 workspace settings
+  - "labuladong-leetcode.workspaceFolder" 为当前工程 /apps/leetcode 目录
+  - "labuladong-leetcode.filePath" filename 为 "${difficulty}/${id}.${cn_name}.${ext}"
+- 登录 leetcode.cn
