@@ -23,40 +23,31 @@ interface ListNode {
 }
 function reverseKGroup(head: ListNode | null, k: number): ListNode | null {
   if (!head || k === 1) return head;
-  let dummy: ListNode = { val: 0, next: head };
-  let prev = dummy;
-  let curr = prev.next;
-  let count = 0;
-  let leftNode: ListNode = curr!;
 
-  while (curr) {
-    if (count === 0) {
-      leftNode = curr;
+  let rightNode: ListNode | null = head;
+  for (let i = 1; i <= k; i++) {
+    if (!rightNode) {
+      return head;
     }
-    if (count <= k - 1) {
-      let node = curr.next;
-      curr.next = prev.next;
-      prev.next = curr;
-      curr = node;
-      leftNode.next = curr;
-    }
-    if (count === k - 1) {
-      prev = leftNode;
-    }
-    count = (count + 1) % k;
+    rightNode = rightNode.next;
   }
-  if (count !== 0) {
-    let result = null;
-    curr = prev.next;
-    while (curr) {
-      let next = curr.next;
-      curr.next = result;
-      result = curr;
-      prev.next = curr;
-      curr = next;
-    }
+
+  const rightList: ListNode | null = reverseKGroup(rightNode, k);
+
+  let prev = null;
+  let curr: ListNode = head;
+  let leftNode: ListNode = head;
+
+  for (let i = 1; i <= k; i++) {
+    const next = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next!;
   }
-  return dummy.next;
+
+  leftNode.next = rightList;
+
+  return prev;
 }
 // @lc code=end
 

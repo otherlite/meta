@@ -24,16 +24,17 @@ interface ListNode {
 }
 
 function reverseList(head: ListNode | null): ListNode | null {
-  let result: ListNode | null = null;
+  let prev: ListNode | null = null;
+  let curr: ListNode | null = head;
 
-  while (head) {
-    const next = head.next;
-    head.next = result;
-    result = head;
-    head = next;
+  while (curr) {
+    const next = curr?.next;
+    curr.next = prev;
+    prev = curr;
+    curr = next;
   }
 
-  return result;
+  return prev;
 }
 // @lc code=end
 

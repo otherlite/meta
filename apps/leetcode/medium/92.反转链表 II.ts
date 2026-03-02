@@ -29,27 +29,26 @@ function reverseBetween(
 ): ListNode | null {
   if (!head || left === right) return head;
 
-  let dummy: ListNode = { val: 0, next: head };
-  let prev = dummy;
+  if (left === 1) {
+    let prev = null;
+    let curr = head;
+    let leftNode = head;
+    while (left <= right) {
+      const next = curr.next;
+      curr.next = prev;
+      prev = curr;
+      curr = next!;
+      left++;
+    }
 
-  for (let i = 1; i < left; i++) {
-    prev = prev.next!;
+    leftNode.next = curr;
+
+    return prev;
   }
 
-  let leftNode = prev.next;
-  let curr = leftNode;
-  let next = null;
-
-  for (let i = left; i <= right; i++) {
-    next = curr!.next;
-    curr!.next = prev.next;
-    prev.next = curr;
-    curr = next;
-  }
-
-  leftNode!.next = curr;
-
-  return dummy.next;
+  const next = head.next;
+  head.next = reverseBetween(next, left - 1, right - 1);
+  return head;
 }
 // @lc code=end
 
