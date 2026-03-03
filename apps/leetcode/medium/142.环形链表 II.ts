@@ -23,6 +23,24 @@ interface ListNode {
   next: ListNode | null;
 }
 function detectCycle(head: ListNode | null): ListNode | null {
+  if (!head) return null;
+
+  let curr: ListNode | null = head;
+  let quick: ListNode | null = head;
+
+  while (quick?.next) {
+    curr = curr?.next ?? null;
+    quick = quick.next.next;
+    if (curr === quick) {
+      quick = head;
+      while (quick !== curr) {
+        quick = quick?.next ?? null;
+        curr = curr?.next ?? null;
+      }
+      return quick;
+    }
+  }
+
   return null;
 }
 // @lc code=end
