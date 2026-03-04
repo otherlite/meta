@@ -17,13 +17,33 @@
  *     }
  * }
  */
-
+interface ListNode {
+  val: number;
+  next: ListNode | null;
+}
 function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
-    
-};
+  if (lists.length === 1) return lists[0];
+
+  let minIndex = Infinity;
+  let minVal = Infinity;
+  for (let i = 0; i < lists.length; i++) {
+    const curr = lists[i]?.val;
+    if (curr !== undefined && curr < minVal) {
+      minIndex = i;
+      minVal = curr;
+    }
+  }
+
+  if (minIndex === Infinity) return null;
+
+  const minNode = lists[minIndex]!;
+  lists[minIndex] = minNode?.next ?? null;
+
+  minNode.next = mergeKLists(lists);
+
+  return minNode;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -39,4 +59,3 @@ function mergeKLists(lists: Array<ListNode | null>): ListNode | null {
 // @lcpr case=end
 
  */
-
