@@ -8,22 +8,25 @@
 // @lc code=start
 function decodeString(s: string): string {
   let stack: string[] = [];
-  let subStack: string[] = [];
 
   for (let i = 0; i < s.length; i++) {
     const char = s.charAt(i);
     if (char !== "]") {
-      stack.push(char);
+      if (s.charCodeAt(i) <= 57 && s.charCodeAt(i - 1) <= 57) {
+        stack[stack.length - 1] += char;
+      } else {
+        stack.push(char);
+      }
     } else {
+      let substr = "";
       while (stack.length > 0) {
         const char = stack.pop()!;
         if (char === "[") {
           const num = stack.pop()!;
-          stack.push(new Array(parseInt(num)).fill(subStack.join("")).join(""));
-          subStack = [];
+          stack.push(new Array(parseInt(num)).fill(substr).join(""));
           break;
         } else {
-          subStack.push(char);
+          substr = char + substr;
         }
       }
     }
