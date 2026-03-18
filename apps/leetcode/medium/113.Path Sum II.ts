@@ -1,8 +1,8 @@
 /*
- * @lc app=leetcode id=236 lang=typescript
+ * @lc app=leetcode id=113 lang=typescript
  * @lcpr version=30400
  *
- * [236] Lowest Common Ancestor of a Binary Tree
+ * [113] Path Sum II
  */
 
 // @lc code=start
@@ -24,42 +24,38 @@ interface TreeNode {
   left: TreeNode | null;
   right: TreeNode | null;
 }
-function lowestCommonAncestor(
-  root: TreeNode | null,
-  p: TreeNode | null,
-  q: TreeNode | null,
-): TreeNode | null {
-  let result: TreeNode | null = null;
-
-  const helper = (node: TreeNode | null): number => {
-    if (!node) return 0;
-    const left = helper(node.left);
-    const right = helper(node.right);
-    const curr = p?.val === node.val || q?.val === node.val ? 1 : 0;
-    const res = left + right + curr;
-    if (res >= 2) {
-      result = node;
+function pathSum2(root: TreeNode | null, targetSum: number): number[][] {
+  if (!root) return [];
+  const result: number[][] = [];
+  const path: number[] = [];
+  const helper = (node: TreeNode | null, targetSum: number) => {
+    if (!node) return;
+    if (!node.left && !node.right && targetSum === node.val) {
+      result.push([...path, node.val]);
+      return;
     }
-    return left | right | curr;
+    path.push(node.val);
+    helper(node.left, targetSum - node.val);
+    helper(node.right, targetSum - node.val);
+    path.pop();
   };
 
-  helper(root);
-
+  helper(root, targetSum);
   return result;
 }
 // @lc code=end
 
 /*
 // @lcpr case=start
-// [3,5,1,6,2,0,8,null,null,7,4]\n5\n1\n
+// [5,4,8,11,null,13,4,7,2,null,null,5,1]\n22\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [3,5,1,6,2,0,8,null,null,7,4]\n5\n4\n
+// [1,2,3]\n5\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [1,2]\n1\n2\n
+// [1,2]\n0\n
 // @lcpr case=end
 
  */
