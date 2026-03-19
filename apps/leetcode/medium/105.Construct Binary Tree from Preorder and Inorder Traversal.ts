@@ -19,13 +19,39 @@
  *     }
  * }
  */
-
+interface TreeNode {
+  val: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
+}
 function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
-    
-};
+  const inorderMap: Map<number, number> = new Map();
+  for (let i = 0; i < inorder.length; i++) {
+    inorderMap.set(inorder[i], i);
+  }
+
+  const helper = (
+    [preI, preJ]: [number, number],
+    [inI, inJ]: [number, number],
+  ): TreeNode | null => {
+    if (preI > preJ) return null;
+    const rootVal = preorder[preI];
+    const root: TreeNode = { val: rootVal, left: null, right: null };
+    const rootIndex = inorderMap.get(rootVal)!;
+    root.left = helper(
+      [preI + 1, preI + rootIndex - inI],
+      [inI, rootIndex - 1],
+    );
+    root.right = helper(
+      [preI + rootIndex - inI + 1, preJ],
+      [rootIndex + 1, inJ],
+    );
+    return root;
+  };
+
+  return helper([0, preorder.length - 1], [0, inorder.length - 1]);
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -37,4 +63,3 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 // @lcpr case=end
 
  */
-
