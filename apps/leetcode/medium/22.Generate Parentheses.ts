@@ -7,11 +7,40 @@
 
 // @lc code=start
 function generateParenthesis(n: number): string[] {
-    
-};
+  const result: string[] = [];
+  const maxLength = n * 2;
+  let path: string[] = [];
+  let left = 0;
+  let right = 0;
+
+  const bfs = () => {
+    if (path.length === maxLength) {
+      result.push(path.join(""));
+      return;
+    }
+
+    if (left < n) {
+      path.push("(");
+      left++;
+      bfs();
+      path.pop();
+      left--;
+    }
+
+    if (left > right && right < n) {
+      path.push(")");
+      right++;
+      bfs();
+      path.pop();
+      right--;
+    }
+  };
+
+  bfs();
+
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -23,4 +52,3 @@ function generateParenthesis(n: number): string[] {
 // @lcpr case=end
 
  */
-
