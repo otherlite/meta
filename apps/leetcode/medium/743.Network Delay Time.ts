@@ -7,11 +7,34 @@
 
 // @lc code=start
 function networkDelayTime(times: number[][], n: number, k: number): number {
+  const graph: number[][][] = Array.from({ length: n + 1 }, () => []);
+  for (let i = 0; i < times.length; i++) {
+    const [u, v, w] = times[i];
+    graph[u].push([v, w]);
+  }
 
-};
+  const dist: number[] = Array.from({ length: n + 1 }, () => Infinity);
+
+  const dfs = (i: number, w: number) => {
+    if (w >= dist[i]) return;
+    dist[i] = w;
+
+    for (let [v, wn] of graph[i]) {
+      dfs(v, w + wn);
+    }
+  };
+
+  dfs(k, 0);
+
+  let res = 0;
+  for (let i = 1; i <= n; i++) {
+    if (dist[i] === Infinity) return -1;
+    res = Math.max(res, dist[i]);
+  }
+
+  return res;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -27,4 +50,3 @@ function networkDelayTime(times: number[][], n: number, k: number): number {
 // @lcpr case=end
 
  */
-
