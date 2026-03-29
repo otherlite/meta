@@ -7,11 +7,36 @@
 
 // @lc code=start
 function findOrder(numCourses: number, prerequisites: number[][]): number[] {
-    
-};
+  const graph: number[][] = Array.from({ length: numCourses }, () => []);
+  for (let i = 0; i < prerequisites.length; i++) {
+    const [a, b] = prerequisites[i];
+    graph[b].push(a);
+  }
+
+  const result: number[] = [];
+  const visited: number[] = Array.from({ length: numCourses }, () => 0);
+
+  const dfs = (i: number) => {
+    if (visited[i] === 1) return false;
+    if (visited[i] === 2) return true;
+
+    const nextArr = graph[i];
+    visited[i] = 1;
+    for (let i = 0; i < nextArr.length; i++) {
+      if (!dfs(nextArr[i])) return false;
+    }
+    visited[i] = 2;
+    result.push(i);
+    return true;
+  };
+
+  for (let i = 0; i < numCourses; i++) {
+    if (!dfs(i)) return [];
+  }
+
+  return result.reverse();
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -27,4 +52,3 @@ function findOrder(numCourses: number, prerequisites: number[][]): number[] {
 // @lcpr case=end
 
  */
-
