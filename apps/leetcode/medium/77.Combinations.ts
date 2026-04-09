@@ -16,8 +16,8 @@ function combine(n: number, k: number): number[][] {
 
   while (start >= k) {
     const rest = combine(start - 1, k - 1);
-    while (rest.length > 0) {
-      result.push(rest.pop()!.concat(start));
+    for (let i = 0; i < rest.length; i++) {
+      result.push(rest[i].concat(start));
     }
     start--;
   }

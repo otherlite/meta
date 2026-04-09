@@ -12,22 +12,23 @@ function combinationSum(candidates: number[], target: number): number[][] {
   const sortedCandidates = candidates.sort((a, b) => a - b);
   const path: number[] = [];
   let sum = 0;
-  const backtrack = () => {
+  const backtrack = (start: number) => {
     if (sum === target) {
       result.push([...path]);
+      return;
     }
-    if (sum > target) return;
-    for (let i = 0; i < sortedCandidates.length; i++) {
-      if (sortedCandidates[i] < path[path.length - 1]) continue;
+    for (let i = start; i < sortedCandidates.length; i++) {
+      if (sum + sortedCandidates[i] > target) break;
+
       path.push(sortedCandidates[i]);
       sum += sortedCandidates[i];
-      backtrack();
+      backtrack(start);
       path.pop();
       sum -= sortedCandidates[i];
     }
   };
 
-  backtrack();
+  backtrack(0);
 
   return result;
 }

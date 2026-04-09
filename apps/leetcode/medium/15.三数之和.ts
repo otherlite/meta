@@ -13,8 +13,8 @@ function threeSum(nums: number[]): number[][] {
   const arr = nums.sort((a, b) => a - b);
   const res = [];
   for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === arr[i - 1]) continue;
     const num1 = arr[i];
-    if (num1 === arr[i - 1]) continue;
     let leftIndex = i + 1;
     let rightIndex = arr.length - 1;
     while (leftIndex < rightIndex) {

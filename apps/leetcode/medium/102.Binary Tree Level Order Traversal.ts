@@ -31,15 +31,15 @@ function levelOrder(root: TreeNode | null): number[][] {
 
   while (stack.length > 0) {
     const ceil: number[] = [];
-    const subStack = [];
-    for (let i = 0; i < stack.length; i++) {
-      const el = stack[i];
+    let length = stack.length;
+    while (length > 0) {
+      const el = stack.shift()!;
       ceil.push(el.val);
-      el.left && subStack.push(el.left);
-      el.right && subStack.push(el.right);
+      el.left && stack.push(el.left);
+      el.right && stack.push(el.right);
+      length--;
     }
     result.push(ceil);
-    stack = subStack;
   }
 
   return result;
