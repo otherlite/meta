@@ -1,0 +1,9 @@
+{
+  "name": "@app/interview",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rm -rf dist && mkdir dist && cp -R docs dist"
+  },
+  "dependencies": {}
+}
+
